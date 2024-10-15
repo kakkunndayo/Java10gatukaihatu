@@ -1,0 +1,109 @@
+package com.example.demo;
+
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        App app = new App();
+        app.start();
+    }
+}
+
+class App {
+    private final Scanner scanner;
+
+    public App() {
+        this.scanner = new Scanner(System.in);
+    }
+
+    public void start() {
+        System.out.println("アプリを利用するならok,やめる場合はqを入力してください");
+        String command1 = scanner.nextLine();
+
+        if (command1.equals("ok")) {
+            runCommands();
+        } else {
+            System.out.println("ご利用ありがとうございました");
+        }
+    }
+
+    private void runCommands() {
+        while (true) {
+            System.out.println("やりたいことをコマンド(add,remove,find,list,exitの中から入力してください。");
+            String command2 = scanner.nextLine();
+
+            CommandHandler commandHandler = getCommandHandler(command2);
+            if (commandHandler != null) {
+                commandHandler.execute();
+                if (commandHandler instanceof ExitCommand) {
+                    break;
+                }
+            } else {
+                System.out.println("無効な操作です");
+            }
+        }
+        scanner.close();
+        System.out.println("ご利用ありがとうございました");
+    }
+
+    private CommandHandler getCommandHandler(String command) {
+        return switch (command) {
+            case "add" -> new AddCommand(scanner);
+            case "remove" -> new RemoveCommand();
+            case "find" -> new FindCommand();
+            case "exit" -> new ExitCommand(scanner);
+            default -> null;
+        };
+    }
+}
+
+interface CommandHandler {
+    void execute();
+}
+
+class AddCommand implements CommandHandler {
+    private final Scanner scanner;
+
+    public AddCommand(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("本を追加します");
+        int type;
+        do {
+            System.out.println("書籍の種類を選んでください(1:紙の書籍, 2:電子書籍):");
+            type = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+        } while (type != 1 && type != 2);
+        System.out.println("本が無事に選ばれました");
+    }
+}
+
+class RemoveCommand implements CommandHandler {
+    @Override
+    public void execute() {
+        System.out.println("本が削除されました");
+    }
+}
+
+class FindCommand implements CommandHandler {
+    @Override
+    public void execute() {
+        System.out.println("本を見つけました");
+    }
+}
+
+class ExitCommand implements CommandHandler {
+    private final Scanner scanner;
+
+    public ExitCommand(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("操作が終了しました");
+    }
+}

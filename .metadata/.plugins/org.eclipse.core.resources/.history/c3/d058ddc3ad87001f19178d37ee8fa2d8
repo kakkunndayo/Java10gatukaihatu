@@ -1,0 +1,41 @@
+package com.example.demo;
+
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		String Command1;
+		do {
+			System.out.println("アプリを利用するならok,やめる場合はqを入力してください");
+			 Command1 = scanner.nextLine();
+			
+			end: //exitが入力された際にループ文から抜けるためにラベルを用いる。
+			while (true) {
+				System.out.println("やりたいことをコマンド(add,remove,find,list,exitの中から入力してください。");
+				String command2 = scanner.nextLine();
+				switch (command2) {
+				case "add" -> {
+					System.out.println("本を追加します");
+					int type;
+					do {
+						System.out.println("書籍の種類を選んでください(1:紙の書籍,2:電子書籍");
+						type = scanner.nextInt();
+					} while (type != 1 && type != 2);
+					System.out.println("本が無事に選ばれました");
+					break end;
+				}
+
+				case "remove" -> System.out.println("本が削除されました");
+				case "find" -> System.out.println("本を見つけました");
+				case "exit" -> {
+					System.out.println("操作が終了しました");
+					scanner.close();
+					break end;
+				}
+				default -> System.out.println("無効な操作です");
+				}
+			}
+		}while(Command1 != "q");
+	}
+}

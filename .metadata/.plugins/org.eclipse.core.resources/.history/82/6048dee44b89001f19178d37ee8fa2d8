@@ -1,0 +1,154 @@
+package com.example.demo;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        App app = new App();
+        app.start();
+    }
+}
+
+class App {
+    private final Scanner scanner;
+    private final List<String> books;
+
+    public App() {
+        this.scanner = new Scanner(System.in);
+        this.books = new ArrayList<>();
+    }
+
+    public void start() {
+        System.out.println("アプリを利用するならok,やめる場合はqを入力してください");
+        String command1 = scanner.nextLine();
+
+        if (command1.equals("ok")) {
+            runCommands();
+        } else {
+            System.out.println("ご利用ありがとうございました");
+        }
+    }
+
+    private void runCommands() {
+        while (true) {
+            System.out.println("やりたいことをコマンド(add, remove, find, list, exitの中から入力してください。");
+            String command2 = scanner.nextLine();
+
+            CommandHandler commandHandler = getCommandHandler(command2);
+            if (commandHandler != null) {
+                commandHandler.execute();
+                if (commandHandler instanceof ExitCommand) {
+                    break;
+                }
+            } else {
+                System.out.println("無効な操作です");
+            }
+        }
+        scanner.close();
+        System.out.println("ご利用ありがとうございました");
+    }
+
+    private CommandHandler getCommandHandler(String command) {
+        return switch (command) {
+            case "add" -> new AddCommand(scanner, books);
+            case "remove" -> new RemoveCommand(scanner, books);
+            case "find" -> new FindCommand(books);
+            case "list" -> new ListCommand(books);
+            case "exit" -> new ExitCommand(scanner);
+            default -> null;
+        };
+    }
+}
+
+interface CommandHandler {
+    void execute();
+}
+
+abstract class BookCommand implements CommandHandler {
+    protected final Scanner scanner;
+    protected final List<String> books;
+
+    public BookCommand(Scanner scanner, List<String> books) {
+        this.scanner = scanner;
+        this.books = books;
+    }
+}
+
+class AddCommand extends BookCommand {
+    public AddCommand(Scanner scanner, List<String> books) {
+        super(scanner, books);
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("本を追加します");
+        System.out.print("本のタイトルを入力してください: ");
+        String title = scanner.nextLine();
+        books.add(title);
+        System.out.println("本 '" + title + "' が無事に追加されました");
+    }
+}
+
+class RemoveCommand extends BookCommand {
+    public RemoveCommand(Scanner scanner, List<String> books) {
+        super(scanner, books);
+    }
+
+    @Override
+    public void execute() {
+        System.out.print("削除したい本のタイトルを入力してください: ");
+        String title = scanner.nextLine();
+        if (books.remove(title)) {
+            System.out.println("本 '" + title + "' が削除されました");
+        } else {
+            System.out.println("本 '" + title + "' は見つかりませんでした");
+        }
+    }
+}
+
+class FindCommand extends BookCommand {
+    public FindCommand(List<String> books) {
+        super(null, books);
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("登録された本の一覧:");
+        for (String book : books) {
+            System.out.println(" - " + book);
+        }
+    }
+}
+
+class ListCommand extends BookCommand {
+    public ListCommand(List<String> books) {
+        super(null, books);
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("登録された本の一覧:");
+        if (books.isEmpty()) {
+            System.out.println("本は登録されていません。");
+        } else {
+            for (String book : books) {
+                System.out.println(" - " + book);
+            }
+        }
+    }
+}
+
+class ExitCommand implements CommandHandler {
+    private final Scanner scanner;
+
+    public ExitCommand(Scanner scanner) {
+        this.scanner = scanner;
+    }
+
+    @Override
+    public void execute() {
+        System.out.println("操作が終了しました");
+    }
+}

@@ -1,0 +1,14 @@
+package com.example.demo.App;
+
+import java.util.List;
+
+public class App {
+	private final Scanner scanner;
+	private final List<String> book;
+
+	public App() {
+		this.scanner = new Scanner(System.in);
+		this.books = new ArrayList<>();
+
+	}
+}

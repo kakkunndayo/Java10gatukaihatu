@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;ListCommand.java&apos; to &apos;demo/src/main/java/com.example.demo.Command&apos;&#x0D;&#x0A;- 元のプロジェクト: &apos;demo&apos;&#x0D;&#x0A;- 宛先要素: &apos;demo/src/main/java/com.example.demo.Command&apos;&#x0D;&#x0A;- オリジナル要素: &apos;com.example.demo.ListCommand.java&apos;&#x0D;&#x0A;- リファクタリングされた要素の参照を更新" description="コンパイル単位を移動" destination="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.example.demo.Command" element1="/src\/main\/java=/optional=/true=/=/maven.pomderived=/true=/&lt;com.example.demo{ListCommand.java" files="0" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" patterns="*" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1728815624312" units="1" version="1.0"/>
+</session>
